@@ -1,0 +1,11 @@
+{
+  "name": "Crehler Autotag Organization Workflow",
+  "description": "Crehler Autotag Organization CI starter workflow.",
+  "iconName": "tag",
+  "categories": [
+    "Automation"
+  ],
+  "filePatterns": [
+    "composer.json$"
+  ]
+}
