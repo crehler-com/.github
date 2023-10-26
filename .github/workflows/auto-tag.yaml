@@ -1,0 +1,32 @@
+name: AutoTag
+
+on:
+  push:
+    branches:
+      - ${{ github.event.repository.default_branch }}
+  pull_request:
+    branches:
+      - ${{ github.event.repository.default_branch }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Read version from composer file
+        run: |
+          CURRENT_VERSION=$(jq -r '.version' composer.json)
+          echo "Current version is: $CURRENT_VERSION"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+        shell: bash
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Create and push a Git tag
+        run: |
+          git tag -a $CURRENT_VERSION -m "Updated package version to: $CURRENT_VERSION"
+          git push origin --tags
+        env:
+          GITHUB_TOKEN: "${{ secrets.HANS_TOKEN }}"
